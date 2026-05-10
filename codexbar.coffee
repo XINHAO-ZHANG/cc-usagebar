@@ -1,4 +1,4 @@
-command: "bash '#{process.env.HOME}/Library/Application Support/Übersicht/widgets/usage.sh'"
+command: "bash ./usage.sh"
 
 refreshFrequency: 60000
 
