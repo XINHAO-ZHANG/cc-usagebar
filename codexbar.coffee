@@ -40,7 +40,7 @@ parseSources: (output) ->
   try
     cc = JSON.parse(ccusageRaw ? '{}')
     blocks = cc?.blocks ? []
-    ccusageBlock = b for b in blocks when b.isActive
+    ccusageBlock = (b for b in blocks when b.isActive)[0] ? null
   catch
     ccusageBlock = null
   { codexbarData, ccusageBlock }
