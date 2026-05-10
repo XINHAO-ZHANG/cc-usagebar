@@ -15,15 +15,17 @@ Built because [CodexBar](https://github.com/steipete/CodexBar)'s menu-bar app do
 - [CodexBar CLI](https://github.com/steipete/CodexBar) — installed and on `$PATH` as `codexbar`
 - Claude Code CLI logged in (for Claude data)
 - Codex CLI logged in (for Codex data)
+- _(optional)_ [ccusage](https://github.com/ryoppippi/ccusage) — `npm install -g ccusage`. Provides Claude's 5-hour session reset countdown that CodexBar does not expose. Without it the Claude session reset just shows `—`.
 
 ## Install
 
 ```bash
 git clone https://github.com/XINHAO-ZHANG/cc-usagebar.git
-cp cc-usagebar/codexbar.coffee \
+cp cc-usagebar/codexbar.coffee cc-usagebar/usage.sh \
   ~/Library/Application\ Support/Übersicht/widgets/
 cp -r cc-usagebar/icons \
   ~/Library/Application\ Support/Übersicht/widgets/
+chmod +x ~/Library/Application\ Support/Übersicht/widgets/usage.sh
 ```
 
 Open Übersicht — the widget appears at the top-right of your desktop.

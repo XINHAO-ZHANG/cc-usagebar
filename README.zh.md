@@ -15,15 +15,17 @@
 - [CodexBar CLI](https://github.com/steipete/CodexBar)（装好后 `codexbar` 在 `$PATH` 里）
 - 已登录的 Claude Code CLI（拉 Claude 用量）
 - 已登录的 Codex CLI（拉 Codex 用量）
+- _（可选）_ [ccusage](https://github.com/ryoppippi/ccusage) —— `npm install -g ccusage`。补 Claude 的 5 小时 session 重置倒计时（CodexBar 不暴露这个字段）。不装的话 Claude session 那一行的 reset 显示为 `—`。
 
 ## 安装
 
 ```bash
 git clone https://github.com/XINHAO-ZHANG/cc-usagebar.git
-cp cc-usagebar/codexbar.coffee \
+cp cc-usagebar/codexbar.coffee cc-usagebar/usage.sh \
   ~/Library/Application\ Support/Übersicht/widgets/
 cp -r cc-usagebar/icons \
   ~/Library/Application\ Support/Übersicht/widgets/
+chmod +x ~/Library/Application\ Support/Übersicht/widgets/usage.sh
 ```
 
 打开 Übersicht，widget 出现在桌面右上角。

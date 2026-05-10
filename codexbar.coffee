@@ -1,4 +1,4 @@
-command: "PATH=/usr/local/bin:/opt/homebrew/bin:$PATH codexbar usage --format json 2>/dev/null"
+command: "bash '#{process.env.HOME}/Library/Application Support/Übersicht/widgets/usage.sh'"
 
 refreshFrequency: 60000
 
@@ -28,26 +28,44 @@ barColor: (remainPct) ->
   else if remainPct > 20 then '#f59e0b'
   else '#ef4444'
 
-parseProviders: (output) ->
+parseSources: (output) ->
+  [codexbarRaw, ccusageRaw] = output.split('---CCUSAGE---')
+  codexbarData = []
+  ccusageBlock = null
   try
-    data = JSON.parse(output)
+    codexbarData = JSON.parse(codexbarRaw ? '[]')
+    codexbarData = [] unless Array.isArray(codexbarData)
   catch
-    return []
-  return [] unless Array.isArray(data)
-  for p in data
+    codexbarData = []
+  try
+    cc = JSON.parse(ccusageRaw ? '{}')
+    blocks = cc?.blocks ? []
+    ccusageBlock = b for b in blocks when b.isActive
+  catch
+    ccusageBlock = null
+  { codexbarData, ccusageBlock }
+
+parseProviders: (output) ->
+  { codexbarData, ccusageBlock } = @parseSources(output)
+  for p in codexbarData
     id = p.provider
     u = p.usage ? {}
     primary = u.primary ? {}
     secondary = u.secondary ? {}
     sessionRemain = if primary.usedPercent? then 100 - primary.usedPercent else null
     weeklyRemain  = if secondary.usedPercent? then 100 - secondary.usedPercent else null
+
+    sessionReset = primary.resetsAt
+    if id is 'claude' and not sessionReset and ccusageBlock
+      sessionReset = ccusageBlock.endTime
+
     {
       id: id
       name: @PROVIDER_LABEL[id] ? id
       plan: @prettyPlan(u.loginMethod)
       sessionRemain: sessionRemain
       weeklyRemain: weeklyRemain
-      sessionReset: primary.resetsAt
+      sessionReset: sessionReset
       weeklyReset: secondary.resetsAt
     }
 
